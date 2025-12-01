@@ -1,42 +1,70 @@
-# Documentation: https://haobogu.github.io/rmk/keyboard_configuration.html
 [keyboard]
-name = "RMK Keyboard"
-product_name = "RMK Keyboard"
+name = "SunoBTSpring3"
+product_name = "SunoBTSpring3"
 vendor_id = 0x4c4b
 product_id = 0x4643
-manufacturer = "haobo"
-chip = "rp2040"
+manufacturer = "RMK"
+chip = "nrf52840"
 
 [matrix]
-# Input and output pins are mandatory
-input_pins = ["PIN_6", "PIN_7", "PIN_8", "PIN_9"]
-output_pins = ["PIN_19", "PIN_20", "PIN_21"]
-# WARNING: Currently row2col/col2row is set in RMK's feature gate, configs here do nothing actually
+# Row and col pins are mandatory
+row_pins = ["P1_02", "P1_07", "P0_31", "P0_29","P0_02"]
+col_pins = ["P0_10", "P0_09","P0_06","P0_08","P0_17","P1_15","P1_13","P1_11","P0_20","P0_22","P0_24","P1_00","P0_11", "P1_04","P1_06"]
+# RMK uses col2row as the default matrix diode direction, if you want to use a row2col matrix, add `row2col = true`
 # row2col = true
 
 [layout]
-rows = 4
-cols = 3
-layers = 2
-keymap = [
-    [
-        ["A", "B", "C"],
-        ["Kc1", "Kc2", "Kc3"],
-        ["LCtrl", "MO(1)", "LShift"],
-        ["OSL(1)", "LT(2, Kc9)", "LM(1, LShift | LGui)"]
-    ],
-    [
-        ["_", "TT(1)", "TG(2)"],
-        ["_", "_", "_"],
-        ["_", "_", "_"],
-        ["_", "_", "_"]
-    ],
-]
+rows = 5
+cols = 15
+layers = 4
+matrix_map = """
+(0,0) (0,1) (0,2) (0,3) (0,4) (0,5) (0,6) (0,7)        (0,8) (0,9) (0,10) (0,11) (0,12) (0,13) (0,14)
+(1,0) (1,1) (1,2) (1,3) (1,4) (1,5) (1,6)           (1,7) (1,8) (1,9) (1,10) (1,11) (1,12) (1,13) (1,14)
+(2,0) (2,1) (2,2) (2,3) (2,4) (2,5) (2,6)             (2,7) (2,8) (2,9) (2,10) (2,11) (2,12) (2,13) 
+      (3,0) (3,1) (3,2) (3,3) (3,4) (3,5)          (3,6) (3,7) (3,8) (3,9) (3,10) (3,11) (3,12) (3,13)
+      (4,0) (4,1)    (4,2)      (4,4)                    (4,5)     (4,9)          (4,11) (4,12) (4,13)
+"""
+[[layer]]
+name = "base_layer"
+keys = """
+        Escape    Grave   Kc1   Kc2   Kc3   Kc4   Kc5   Kc6      Kc7   Kc8   Kc9   Kc0   Minus   Equal    Backspace
+        TG(2)     Tab     Q     W     E     R     T              Y     U     I     O     P   LeftBracket   RightBracket   Backslash
+        MO(3)     LCtrl    A     S     D     F     G              H     J     K     L     Semicolon     Quote     Enter
+                  LShift    Z     X     C     V     B            B     N     M     Comma     Dot     Slash     UP     RShift
+                 LCtrl    LGui    LAlt      LT(2,Space)          Space       MO(1)                    Left     Down     Right
+"""
+[[layer]]
+name = "Fn_layer"
+keys = """
+        _         No      F1    F2    F3    F4    F5    F6       F7    F8     F9     F10    F11     F12     Delete
+        _         _       No    No    No    No    No             No    PageUp  Insert  No   PrintScreen  No      No       No
+        _      CapsLock  AudioVolDown  AudioVolUp  AudioMute  No  No  Home  PageDown   No   No   No   No    _
+                   _       No     No    No    No    No            No   End     No    No     No     No     _      _
+                   _       _       _         _                     _          _                        _         _        _
+"""
+[[layer]]
+name = "Number_layer"
+keys = """
+        _         No      No    No    No    No    No     No     No  KpAsterisk  No   No   KpMinus  KpPlus   Backspace
+        _          _       No    No    No    No     No          Kp7    Kp8    Kp9   No   No   No            No             KpSlash
+                _       CapsLock    No NumLock  No    No    No           Kp4    Kp5    Kp6   No   No   No       KpEnter
+                   _        No    No   Calculator  No  No       Kp1    Kp2    Kp3    No   No   No       _       _
+                    _       _       _             _             Kp0         KpDot               _       _       _
+"""
+[[layer]]
+name = "Mouse_layer"
+keys = """
+        _         No  MouseAccel0  MouseAccel1  MouseAccel2   No  No  No       No   No   No   No   No   No    Delete
+        _         _      No    MouseWheelUp      No      No       No          No   No   No   No   No   No   No   No
+        _      CapsLock  MouseWheelLeft   MouseWheelRight   No  No  No         No   No    No    No    No    No      _
+                _      MouseWheelDown      No      No      No      No         No      No      No      No      No      No      MouseUp     _
+                  _      _        _          MouseBtn1           MouseBtn2     _         MouseLeft      MouseDown      MouseRight
+"""
 
 [light]
 # All light pins are high-active by default, uncomment if you want it to be low-active
-# capslock.pin = "PB2"
-# capslock.low_active = true
+capslock.pin = "P1_01"
+capslock.low_active = true
 # scrolllock.pin = "PA3"
 # scrolllock.low_active = true
 # Just ignore if no light pin is used for it
@@ -44,7 +72,16 @@ keymap = [
 # numslock.low_active = true
 
 
+[ble]
+enabled = true
+# vddh has an internal voltage divider
+# battery_adc_pin = "vddh"
+# Or
+# battery_adc_pin = "P0_04"
+# adc_divider_measured = 2000
+# adc_divider_total = 2806
 
-[storage]
-# Storage feature is enabled by default
-# enabled = false
+# charge_state.pin = "P0_25"
+# charge_state.low_active = false
+charge_led.pin = "P0_15"
+charge_led.low_active = true
